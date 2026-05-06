@@ -1,0 +1,13 @@
+{
+  "agent": "cleo",
+  "agent_display": "Cleo, Growth strategy",
+  "timestamp": "2026-05-06T14:17:22",
+  "status": "needs_input",
+  "headline": "Cleo's weekly run failed (2026-05-06)",
+  "summary": "Claude analysis failed: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CamNyH36omrafx8BYz9L1'}",
+  "actions_needed": [
+    "Check the GitHub Actions run for full logs",
+    "Re-run the workflow once fixed"
+  ],
+  "files_created": []
+}
