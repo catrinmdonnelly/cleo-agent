@@ -1,20 +1,18 @@
 # Cleo
 
-A weekly growth strategist for small businesses.
+A weekly growth strategist for small businesses, who replaces the strategy meeting nobody books with a five-minute brief that lands in your repo every Monday morning before the working week starts.
 
-Most owners are too busy doing the work to think about whether they're doing the **right** work. Strategy becomes whatever's loudest on Monday morning. Cleo replaces that with a forced five-minute reading exercise: every Monday, before you start, she writes a brief that says what worked last week, what didn't, and the one thing to focus on this week.
-
-She is the friend who's been thinking about your business while you slept and has one specific recommendation when you wake up.
+Most owners are too busy doing the work to think about whether they're doing the right work, and strategy quietly becomes whatever is loudest first thing on Monday. Cleo replaces that with a forced reading exercise: every week, before anything else has a chance to demand your attention, she writes a brief that names what worked last week, what didn't, and the one thing to focus on this week. She is the friend who has been thinking about your business while you slept and has one specific recommendation by the time you wake up.
 
 > **Status:** Free to use. Take the code, point it at your business. MIT licensed.
 
 ## What Cleo actually does for a business
 
-Take a small ecommerce brand. £40k/month, two people, no marketing team. Every Monday at 7am, before the working week starts, Cleo reads what's happening in the business, scans the web for what's happening outside, and writes a brief that lands like this:
+Picture a small ecommerce brand turning over £40,000 a month, with two people running it, no marketing team, and the founder making the actual product most days. Every Monday at seven in the morning, before that founder opens her laptop, Cleo reads what's happening inside the business, scans the web for what's happening outside, and writes a brief that lands like this:
 
-> Last week three of your four sales came from the newsletter, not from social. Stop pushing posts about new arrivals on Instagram, you're posting into a void. Send two newsletters this week instead of one. The "behind the scenes of how it's made" angle is the one that worked. Try it again Wednesday with a different product. Mother's Day is in 4 weeks, you don't have a campaign yet, that's your real focus this month, not Instagram.
+> Last week three of your four sales came from the newsletter rather than social, so stop pushing posts about new arrivals on Instagram (you're posting into a void) and send two newsletters this week instead of one. The "behind the scenes of how it's made" angle is the one that worked, so try it again on Wednesday with a different product. Mother's Day is also four weeks away and you don't have a campaign yet, which is your real focus this month, not Instagram.
 
-That's the value. Anyone could write that brief. The point is **someone is doing this for you every Monday, on time, without you having to remember**.
+The value isn't the brief itself, since anyone could write something similar given the inputs. The value is that **someone is writing it for you every Monday, on time, without you ever having to remember it's Monday**.
 
 ## Who Cleo helps
 
@@ -31,9 +29,7 @@ That's the value. Anyone could write that brief. The point is **someone is doing
 
 ## What success looks like
 
-Not a stack of beautiful briefs. **Three or four things in your business that changed because Cleo flagged them.** A campaign that ran because she said "Mother's Day is coming." A failed channel killed because she said "this isn't working, stop spending on it." A product that got more attention because the data showed it was the one customers actually liked.
-
-If a year goes by and nothing in the business looks different, Cleo wasn't doing her job (or you weren't reading her).
+Success isn't a stack of beautifully-written briefs piling up in your repo. It's three or four things that actually changed in your business across a quarter because Cleo flagged them: a campaign that ran because she said Mother's Day was coming, a failed channel that got killed because she said it wasn't working and you finally stopped spending on it, a product that got more attention because the data showed it was the one customers actually liked. If a year goes by and nothing in the business looks any different, Cleo wasn't doing her job, or you weren't reading her.
 
 ## What you get every Monday
 
