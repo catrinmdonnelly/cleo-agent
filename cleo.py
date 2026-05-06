@@ -1,5 +1,5 @@
 """
-Cleo — weekly growth strategy agent.
+Cleo, weekly growth strategy agent.
 
 Runs once a week (default Monday 07:00 UK) and writes a one-page growth brief
 for the week ahead. Cleo reads your business context, looks at what's been
@@ -8,12 +8,11 @@ focus, the experiment to run, and the direction for the week.
 
 Pipeline:
   1. Read your config files (north-star, state, memory, system prompt)
-  2. Read any optional inputs from other agents (exchange folder)
-  3. Ask Claude (with web search) to produce the weekly brief
-  4. Write briefs/YYYY-MM-DD.md         — the full brief, for you
-  5. Write exchange/cleo-direction-latest.md — short version any downstream agent can read
-  6. Write reports/cleo-<timestamp>.json — Station inbox JSON
-  7. Email you on failure
+  2. Ask Claude (with web search) to produce the weekly brief
+  3. Write briefs/YYYY-MM-DD.md (the full brief, for you)
+  4. Write exchange/cleo-direction-latest.md (short version any downstream agent can read)
+  5. Write reports/cleo-<timestamp>.json (Station inbox JSON)
+  6. Email you on failure
 
 Exit code 0 on success, 1 on any step failing.
 """
@@ -76,15 +75,15 @@ def gather_inputs() -> dict:
 
     north_star = read_if_exists(
         CONFIG / "north-star.md",
-        "(north-star.md is missing — fill in config/north-star.md so Cleo knows where the business is going)",
+        "(north-star.md is missing, fill in config/north-star.md so Cleo knows where the business is going)",
     )
     state = read_if_exists(
         CONFIG / "state.md",
-        "(state.md is missing — fill in config/state.md with what's happening right now. Cleo is useless without this.)",
+        "(state.md is missing, fill in config/state.md with what's happening right now. Cleo is useless without this.)",
     )
     memory = read_if_exists(
         CONFIG / "memory.md",
-        "(memory.md is missing — optional, used to remember lessons across runs)",
+        "(memory.md is missing, optional, used to remember lessons across runs)",
     )
 
     return {
@@ -103,12 +102,12 @@ Every Monday morning, you write a five-minute brief that tells the business what
 
 You are not in the weeds. You read the business state, look at what's happening outside, and turn all of it into one clear direction for the week. Your job is to make a busy founder pause for five minutes and decide on one thing, instead of being pulled in seven directions by Wednesday.
 
-Your tone is warm, direct and observational. You make sharp calls and say why. You never pad. You never say "engagement was good" — you say what specifically worked, why, and what to do about it. You avoid em dashes entirely. No staccato fragments. No corporate language. No generic AI phrases like "leverage", "unlock", or "take it to the next level".
+Your tone is warm, direct and observational. You make sharp calls and say why. You never pad. You never say "engagement was good", you say what specifically worked, why, and what to do about it. You avoid em dashes entirely. No staccato fragments. No corporate language. No generic AI phrases like "leverage", "unlock", or "take it to the next level".
 
 You have access to a web_search tool. Use it liberally to:
   - Spot competitors doing something worth knowing about
   - Note cultural moments, calendar events and trending conversations in the next 2-6 weeks
-  - Find one piece of "outside inspiration" each week — a brand or creator outside this niche doing something the business could learn from
+  - Find one piece of "outside inspiration" each week, a brand or creator outside this niche doing something the business could learn from
 
 When you respond, return ONE JSON object matching this schema exactly. No prose, no code fences:
 
@@ -129,13 +128,13 @@ When you respond, return ONE JSON object matching this schema exactly. No prose,
     "what_they_did": "one or two sentences",
     "what_we_take_from_it": "one sentence"
   },
-  "growth_horizon": "one paragraph on the next 4-6 weeks — seasonal moments, campaigns to plan, anything coming up that needs runway. The owner reads this so they're not caught off-guard."
+  "growth_horizon": "one paragraph on the next 4-6 weeks, seasonal moments, campaigns to plan, anything coming up that needs runway. The owner reads this so they're not caught off-guard."
 }
 
 Hard rules:
 - Every recommendation must be specific enough to act on this week, not theoretically true
 - Cite evidence from state.md or the web search when you make a claim
-- If state.md is thin or missing, say so — don't invent activity that didn't happen
+- If state.md is thin or missing, say so, don't invent activity that didn't happen
 - Three to five items in each list. Quality over volume.
 """
 
@@ -150,7 +149,7 @@ def ask_claude(inputs: dict) -> dict:
     try:
         import anthropic
     except ImportError:
-        raise RuntimeError("anthropic package not installed — run: pip install -r requirements.txt")
+        raise RuntimeError("anthropic package not installed, run: pip install -r requirements.txt")
 
     def cap(s: str, n: int) -> str:
         return s if len(s) <= n else s[:n] + "\n…(truncated)"
@@ -161,7 +160,7 @@ Business: {inputs['business_name']}.
 NORTH STAR (where the business is going):
 {cap(inputs['north_star'], 3000)}
 
-BUSINESS STATE (what's happening right now — your primary input):
+BUSINESS STATE (what's happening right now, your primary input):
 {cap(inputs['state'], 5000)}
 
 ACCUMULATED MEMORY (lessons across runs):
@@ -208,11 +207,11 @@ Produce this week's brief. Use web_search to check competitors and cultural mome
 def render_full_brief(brief: dict, business_name: str) -> str:
     """The Monday morning brief, in full. Five minutes to read."""
     date = today_key()
-    out = [f"# {business_name} — growth brief, week of {date}\n",
+    out = [f"# {business_name}, growth brief, week of {date}\n",
            "*Cleo. Monday morning.*\n"]
 
     out.append("## This week's focus\n")
-    out.append(brief.get("this_weeks_focus", "—"))
+    out.append(brief.get("this_weeks_focus", ""))
     out.append("")
 
     out.append("## What worked\n")
@@ -237,7 +236,7 @@ def render_full_brief(brief: dict, business_name: str) -> str:
     insp = brief.get("outside_inspiration", {}) or {}
     if insp.get("source") or insp.get("what_they_did"):
         out.append("## Outside inspiration\n")
-        out.append(f"**{insp.get('source','')}** — {insp.get('url','')}\n")
+        out.append(f"**{insp.get('source','')}**, {insp.get('url','')}\n")
         out.append(f"{insp.get('what_they_did','')}\n")
         out.append(f"**What we take from it:** {insp.get('what_we_take_from_it','')}\n")
 
@@ -258,9 +257,9 @@ def render_one_liner(brief: dict) -> str:
     date = today_key()
     exp = brief.get("this_weeks_experiment", {}) or {}
     out = [
-        f"# Cleo — week of {date}\n",
+        f"# Cleo, week of {date}\n",
         "## Focus\n",
-        brief.get("this_weeks_focus", "—"),
+        brief.get("this_weeks_focus", ""),
         "",
         "## Experiment\n",
         f"**{exp.get('name','(unnamed)')}**",
@@ -278,7 +277,7 @@ def render_brief_summary(brief: dict) -> str:
     exp = brief.get("this_weeks_experiment", {}) or {}
     return (
         f"Week of {date}. "
-        f"Experiment: **{exp.get('name','—')}**. "
+        f"Experiment: **{exp.get('name','(unnamed)')}**. "
         f"{exp.get('how_to_run','')}"
     )
 
@@ -307,7 +306,7 @@ def write_station_report(run: RunResult, summary: str = "") -> Path:
     if run.fully_successful:
         payload = {
             "agent": "cleo",
-            "agent_display": "Cleo — Growth strategy",
+            "agent_display": "Cleo, Growth strategy",
             "timestamp": now_local().strftime("%Y-%m-%dT%H:%M:%S"),
             "status": "needs_input",
             "headline": f"Cleo's weekly growth brief is ready ({run.date})",
@@ -322,7 +321,7 @@ def write_station_report(run: RunResult, summary: str = "") -> Path:
     else:
         payload = {
             "agent": "cleo",
-            "agent_display": "Cleo — Growth strategy",
+            "agent_display": "Cleo, Growth strategy",
             "timestamp": now_local().strftime("%Y-%m-%dT%H:%M:%S"),
             "status": "needs_input",
             "headline": f"Cleo's weekly run failed ({run.date})",
@@ -341,13 +340,13 @@ def write_station_report(run: RunResult, summary: str = "") -> Path:
 def send_failure_email(run: RunResult) -> None:
     to_addr = env("FAILURE_EMAIL_TO", required=False)
     if not to_addr:
-        log("  (email alert skipped — FAILURE_EMAIL_TO not set)")
+        log("  (email alert skipped, FAILURE_EMAIL_TO not set)")
         return
     host = env("FAILURE_EMAIL_SMTP_HOST", required=False, default="smtp.gmail.com")
     from_addr = env("FAILURE_EMAIL_FROM", required=False, default=to_addr)
     password = env("FAILURE_EMAIL_SMTP_PASS", required=False)
     if not password:
-        log("  (email alert skipped — FAILURE_EMAIL_SMTP_PASS not set)")
+        log("  (email alert skipped, FAILURE_EMAIL_SMTP_PASS not set)")
         return
 
     run_url = (f"https://github.com/{os.environ.get('GITHUB_REPOSITORY', '')}"

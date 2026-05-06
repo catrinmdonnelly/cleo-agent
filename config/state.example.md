@@ -1,4 +1,4 @@
-# Current state — example
+# Example state.md
 
 *This is what a strong `state.md` looks like for a fictional ecommerce brand. Yours doesn't need to be polished prose; bullet points are fine. The point is specificity. Real numbers, named channels, actual situations.*
 
@@ -7,7 +7,7 @@
 ## This month at a glance
 
 - Revenue: £4,200 across 38 orders. Average order £110.
-- 3 customers came back for a second order — biggest repeat number we've ever had in a month.
+- 3 customers came back for a second order, biggest repeat number we've ever had in a month.
 - Instagram traffic flat, sessions down 12% month on month.
 - Newsletter open rate 41%, click rate 8%. The "behind the scenes" angle outperforms product launches by 3x.
 - Working on launching the new mug range in 3 weeks. Stuck on which photographer to use, three quotes in front of me.

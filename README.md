@@ -12,7 +12,7 @@ She is the friend who's been thinking about your business while you slept and ha
 
 Take a small ecommerce brand. £40k/month, two people, no marketing team. Every Monday at 7am, before the working week starts, Cleo reads what's happening in the business, scans the web for what's happening outside, and writes a brief that lands like this:
 
-> Last week three of your four sales came from the newsletter, not from social. Stop pushing posts about new arrivals on Instagram, you're posting into a void. Send two newsletters this week instead of one. The "behind the scenes of how it's made" angle is the one that worked. Try it again Wednesday with a different product. Mother's Day is in 4 weeks, you don't have a campaign yet — that's your real focus this month, not Instagram.
+> Last week three of your four sales came from the newsletter, not from social. Stop pushing posts about new arrivals on Instagram, you're posting into a void. Send two newsletters this week instead of one. The "behind the scenes of how it's made" angle is the one that worked. Try it again Wednesday with a different product. Mother's Day is in 4 weeks, you don't have a campaign yet, that's your real focus this month, not Instagram.
 
 That's the value. Anyone could write that brief. The point is **someone is doing this for you every Monday, on time, without you having to remember**.
 
@@ -24,7 +24,7 @@ That's the value. Anyone could write that brief. The point is **someone is doing
 
 ## Who Cleo doesn't help
 
-- A business that won't update `state.md` — Cleo is only as sharp as the input
+- A business that won't update `state.md`, Cleo is only as sharp as the input
 - An owner who reads the brief but never acts
 - A business that needs sales help (Cleo has no view of your CRM)
 - A pre-product startup with nothing to react to yet
@@ -39,11 +39,11 @@ If a year goes by and nothing in the business looks different, Cleo wasn't doing
 
 A markdown file at `briefs/YYYY-MM-DD.md` with five sections:
 
-1. **This week's focus** — one paragraph, the headline
-2. **What worked / what isn't working** — last week's signals
-3. **This week's experiment** — one thing to try, in under 30 minutes, with a metric and a decide-by date
-4. **Outside inspiration** — one brand or creator outside your space worth learning from
-5. **Growth horizon** — what's coming up in the next 4-6 weeks so you don't get caught off guard
+1. **This week's focus**, one paragraph, the headline
+2. **What worked / what isn't working**, last week's signals
+3. **This week's experiment**, one thing to try, in under 30 minutes, with a metric and a decide-by date
+4. **Outside inspiration**, one brand or creator outside your space worth learning from
+5. **Growth horizon**, what's coming up in the next 4-6 weeks so you don't get caught off guard
 
 You also get a one-liner at `exchange/cleo-direction-latest.md` for any dashboard or downstream agent, and a Station inbox JSON if you use the [Station widget](https://github.com/catrinmdonnelly/station).
 
@@ -100,7 +100,7 @@ Each one runs on its own. You don't need to run all three.
 
 ## Help
 
-Issues and pull requests welcome. If your brief feels generic, that's almost always a `state.md` problem — open an issue with what you've got in there and I'll suggest where it could be sharper.
+Issues and pull requests welcome. If your brief feels generic, that's almost always a `state.md` problem, open an issue with what you've got in there and I'll suggest where it could be sharper.
 
 ## Licence
 

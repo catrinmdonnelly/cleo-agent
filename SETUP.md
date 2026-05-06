@@ -1,6 +1,6 @@
 # Cleo setup
 
-Plain English, end to end. About 30-45 minutes from start to first run. Most of that time is on `state.md` — that's the work that decides whether Cleo helps you or not.
+Plain English, end to end. About 30-45 minutes from start to first run. Most of that time is on `state.md`, that's the work that decides whether Cleo helps you or not.
 
 ## Before you start
 
@@ -8,13 +8,13 @@ You'll need:
 - A GitHub account ([sign up free](https://github.com/join) if you don't have one)
 - An Anthropic account ([sign up](https://console.anthropic.com))
 - About £5 of credit on your Anthropic account (Cleo costs ~£2 a month at typical use)
-- 30-45 minutes — most of it for filling in `state.md` properly
+- 30-45 minutes, most of it for filling in `state.md` properly
 
 You will *not* need to write any code.
 
 ---
 
-## Step 1 — get an Anthropic API key
+## Step 1. Get an Anthropic API key
 
 1. Go to [console.anthropic.com](https://console.anthropic.com).
 2. Sign up or sign in.
@@ -24,21 +24,21 @@ You will *not* need to write any code.
 
 ---
 
-## Step 2 — copy the repo into your GitHub
+## Step 2. Copy the repo into your GitHub
 
 1. Click **Fork** in the top right of [the GitHub page](https://github.com/catrinmdonnelly/cleo-agent), or use **Use this template** for a clean repo.
 2. Either way, you now have your own copy.
 
 ---
 
-## Step 3 — fill in `state.md` properly. *This is the most important step.*
+## Step 3. Fill in `state.md` properly. *This is the most important step.*
 
 If you skip this or do it badly, Cleo will write generic, unhelpful briefs every Monday. If you do it well, the briefs will be sharp from week one.
 
 `state.md` lives in the `config/` folder. It needs to answer four questions:
 
 1. **What's happening in the business right now?** Last month's revenue, customers, what shipped, what's in progress, what's blocked.
-2. **What's been working recently?** Specific channels, formats, customer types — anything you've noticed performing.
+2. **What's been working recently?** Specific channels, formats, customer types, anything you've noticed performing.
 3. **What's been failing recently?** So Cleo doesn't keep suggesting it.
 4. **What's launching or changing soon?** So Cleo can plan around it.
 
@@ -50,7 +50,7 @@ This is the difference between Cleo being useful and Cleo being noise:
 > Things are going okay. We had some sales last month. Newsletter is going well. Trying to grow on Instagram.
 
 **Strong input:**
-> Last month: £4,200 revenue across 38 orders. Three customers came back for a second order, biggest single repeat. Instagram traffic flat, sessions down 12% month on month. Newsletter open rate 41%, click rate 8% — the "behind the scenes" angle is the one that converts. Working on launching the new mug range in 3 weeks. Stuck on which photographer to use, three quotes in front of me. Cash position: 4 months runway at current burn. Trying to decide whether to spend on paid Instagram ads or commission a brand video — leaning toward video.
+> Last month: £4,200 revenue across 38 orders. Three customers came back for a second order, biggest single repeat. Instagram traffic flat, sessions down 12% month on month. Newsletter open rate 41%, click rate 8%, the "behind the scenes" angle is the one that converts. Working on launching the new mug range in 3 weeks. Stuck on which photographer to use, three quotes in front of me. Cash position: 4 months runway at current burn. Trying to decide whether to spend on paid Instagram ads or commission a brand video, leaning toward video.
 
 The second one gives Cleo something to work with. Specific numbers, named channels, real situations. The first one will get you a brief that sounds like a LinkedIn post.
 
@@ -68,7 +68,7 @@ You'll update it every couple of weeks as things change. Cleo reads it every Mon
 
 ---
 
-## Step 4 — fill in `north-star.md`
+## Step 4. Fill in `north-star.md`
 
 This is the piece that doesn't change month to month. Where the business is going. Who it's for. What it won't do.
 
@@ -80,7 +80,7 @@ You only need to do this once, then revisit it every six months.
 
 ---
 
-## Step 5 — `memory.md` (optional, can stay empty)
+## Step 5. `memory.md` (optional, can stay empty)
 
 Cleo will reference this file if there's anything in it. You can leave it empty for now. Add lessons over time, like:
 
@@ -90,13 +90,13 @@ This stops Cleo recommending the same dead ends.
 
 ---
 
-## Step 6 — `system-prompt.md` (optional)
+## Step 6. `system-prompt.md` (optional)
 
-Leave this blank to use Cleo's default voice. Edit it if you want her to sound different — maybe more formal, more aggressive, more focused on a specific framework you like.
+Leave this blank to use Cleo's default voice. Edit it if you want her to sound different, maybe more formal, more aggressive, more focused on a specific framework you like.
 
 ---
 
-## Step 7 — add your API key as a GitHub secret
+## Step 7. Add your API key as a GitHub secret
 
 Secrets are how GitHub safely stores your API key without putting it in the code.
 
@@ -107,7 +107,7 @@ Secrets are how GitHub safely stores your API key without putting it in the code
 
 ---
 
-## Step 8 — set your business name
+## Step 8. Set your business name
 
 This makes the brief title use your real business name instead of "your business".
 
@@ -118,7 +118,7 @@ This makes the brief title use your real business name instead of "your business
 
 ---
 
-## Step 9 — turn on Actions
+## Step 9. Turn on Actions
 
 GitHub Actions is what runs Cleo every Monday. It's free for what we're doing.
 
@@ -127,7 +127,7 @@ GitHub Actions is what runs Cleo every Monday. It's free for what we're doing.
 
 ---
 
-## Step 10 — run Cleo for the first time
+## Step 10. Run Cleo for the first time
 
 You don't have to wait until Monday.
 
@@ -136,11 +136,11 @@ You don't have to wait until Monday.
 3. Click the **Run workflow** dropdown on the right, then **Run workflow** in the box that appears.
 4. Wait two to five minutes. Refresh.
 5. The run should turn green. Click into your repo's `briefs/` folder and you'll see your first brief.
-6. Read it. If it feels generic or off, that's almost always a `state.md` problem — go back to step 3 and add more specifics, then re-run.
+6. Read it. If it feels generic or off, that's almost always a `state.md` problem, go back to step 3 and add more specifics, then re-run.
 
 ---
 
-## Step 11 (optional) — failure email alerts
+## Step 11 (optional). Failure email alerts
 
 If you want Cleo to email you when a run fails, you'll need a Gmail account with an app password.
 
@@ -154,7 +154,7 @@ If you want Cleo to email you when a run fails, you'll need a Gmail account with
 
 ---
 
-## Step 12 — change the schedule (optional)
+## Step 12. Change the schedule (optional)
 
 Cleo runs at 07:00 UK every Monday by default. To change:
 
