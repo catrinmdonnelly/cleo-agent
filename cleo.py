@@ -76,32 +76,21 @@ def gather_inputs() -> dict:
 
     north_star = read_if_exists(
         CONFIG / "north-star.md",
-        "(north-star.md is missing — fill in config/north-star.md to give Cleo direction)",
+        "(north-star.md is missing — fill in config/north-star.md so Cleo knows where the business is going)",
     )
     state = read_if_exists(
         CONFIG / "state.md",
-        "(state.md is missing — fill in config/state.md with your current business state)",
+        "(state.md is missing — fill in config/state.md with what's happening right now. Cleo is useless without this.)",
     )
     memory = read_if_exists(
         CONFIG / "memory.md",
-        "(memory.md is missing — Cleo uses this to remember lessons across runs; the file can start empty)",
+        "(memory.md is missing — optional, used to remember lessons across runs)",
     )
-
-    # Optional inputs from other agents in the exchange folder.
-    seo_report = read_if_exists(EXCHANGE / "seo-report-latest.md",
-                                "(no SEO report this cycle)")
-    seo_trends = read_if_exists(EXCHANGE / "seo-trends-latest.md",
-                                "(no trend findings this cycle)")
-    social_recent = read_if_exists(EXCHANGE / "social-recent-plans.md",
-                                   "(no recent social content shared)")
 
     return {
         "north_star": north_star,
         "state": state,
         "memory": memory,
-        "seo_report": seo_report,
-        "seo_trends": seo_trends,
-        "social_recent": social_recent,
         "business_name": env("BUSINESS_NAME", required=False, default="your business"),
     }
 
@@ -110,44 +99,28 @@ def gather_inputs() -> dict:
 
 DEFAULT_SYSTEM_PROMPT = """You are Cleo, a weekly growth strategist.
 
-You are not in the weeds. You read what's happening in the business, look at what's happening outside, and turn all of it into one clear direction for the week.
+Every Monday morning, you write a five-minute brief that tells the business what to focus on this week and why. You are the friend who's been thinking about their business overnight and has one clear, specific recommendation when they wake up.
 
-Your tone is warm, direct and observational. You make sharp calls and say why. You never pad. You never say "engagement was good" — you say what specifically worked, why, and what to do about it. You avoid em dashes entirely. No staccato fragments. No corporate language.
+You are not in the weeds. You read the business state, look at what's happening outside, and turn all of it into one clear direction for the week. Your job is to make a busy founder pause for five minutes and decide on one thing, instead of being pulled in seven directions by Wednesday.
+
+Your tone is warm, direct and observational. You make sharp calls and say why. You never pad. You never say "engagement was good" — you say what specifically worked, why, and what to do about it. You avoid em dashes entirely. No staccato fragments. No corporate language. No generic AI phrases like "leverage", "unlock", or "take it to the next level".
 
 You have access to a web_search tool. Use it liberally to:
-  - Spot competitors doing something interesting
-  - Note cultural moments, calendar events and trending conversations in the next 2-4 weeks
-  - Identify content formats and channels working in this space
-  - Find one piece of "outside inspiration" — not to copy, to spark thinking
+  - Spot competitors doing something worth knowing about
+  - Note cultural moments, calendar events and trending conversations in the next 2-6 weeks
+  - Find one piece of "outside inspiration" each week — a brand or creator outside this niche doing something the business could learn from
 
 When you respond, return ONE JSON object matching this schema exactly. No prose, no code fences:
 
 {
-  "what_worked": ["specific observation", ...],
-  "what_isnt_working": ["specific observation", ...],
-  "direction_this_week": {
-    "focus": "what the business should lean into this week, in two sentences",
-    "key_actions": [
-      {"action": "...", "owner": "who or what does this", "why": "..."}
-    ],
-    "tone_calibration": "one or two sentences on the emotional register for the week"
-  },
-  "content_guidance": {
-    "moments_to_cover": [
-      {"moment": "...", "hook_example": "one jarring sentence under 95 chars", "why": "..."}
-    ]
-  },
-  "seo_guidance": {
-    "priority_keywords": ["..."],
-    "priority_backlink_targets": ["..."],
-    "forum_angles": ["..."],
-    "other": "anything else worth flagging"
-  },
+  "what_worked": ["specific observation, named with evidence", ...],
+  "what_isnt_working": ["specific observation, named with evidence", ...],
+  "this_weeks_focus": "one paragraph: what the business should pay attention to this week and why. Concrete enough that the owner could explain it in one sentence to a friend.",
   "this_weeks_experiment": {
     "name": "short snappy name",
-    "hypothesis": "what we expect will happen",
-    "how_to_run": "concrete steps that take under 30 minutes",
-    "what_to_measure": "one clear metric",
+    "hypothesis": "what we expect will happen and why",
+    "how_to_run": "concrete steps the owner can do in under 30 minutes this week",
+    "what_to_measure": "one clear metric, with a target if you can be specific",
     "decide_by": "YYYY-MM-DD"
   },
   "outside_inspiration": {
@@ -156,10 +129,14 @@ When you respond, return ONE JSON object matching this schema exactly. No prose,
     "what_they_did": "one or two sentences",
     "what_we_take_from_it": "one sentence"
   },
-  "growth_horizon": "one paragraph on the next 4-6 weeks — seasonal moments, campaigns to plan, anything coming up that needs runway. Keep it tight."
+  "growth_horizon": "one paragraph on the next 4-6 weeks — seasonal moments, campaigns to plan, anything coming up that needs runway. The owner reads this so they're not caught off-guard."
 }
 
-Keep every list to 3-5 high-quality items. Every recommendation must be specific enough to act on tomorrow.
+Hard rules:
+- Every recommendation must be specific enough to act on this week, not theoretically true
+- Cite evidence from state.md or the web search when you make a claim
+- If state.md is thin or missing, say so — don't invent activity that didn't happen
+- Three to five items in each list. Quality over volume.
 """
 
 
@@ -181,25 +158,16 @@ def ask_claude(inputs: dict) -> dict:
     user_message = f"""Today is {now_local().strftime('%A %d %B %Y')}.
 Business: {inputs['business_name']}.
 
-NORTH STAR:
+NORTH STAR (where the business is going):
 {cap(inputs['north_star'], 3000)}
 
-BUSINESS STATE:
-{cap(inputs['state'], 4000)}
+BUSINESS STATE (what's happening right now — your primary input):
+{cap(inputs['state'], 5000)}
 
-ACCUMULATED MEMORY (what we've learned):
+ACCUMULATED MEMORY (lessons across runs):
 {cap(inputs['memory'], 5000)}
 
-LATEST SEO REPORT (from your SEO agent, if any):
-{cap(inputs['seo_report'], 3000)}
-
-LATEST SEO TREND FINDINGS:
-{cap(inputs['seo_trends'], 2000)}
-
-RECENT SOCIAL CONTENT (last 7 days, if any):
-{cap(inputs['social_recent'], 6000)}
-
-Produce this week's direction. Use web_search to check competitors and cultural moments. Return one JSON object only.
+Produce this week's brief. Use web_search to check competitors and cultural moments. Return one JSON object only.
 """
 
     client = anthropic.Anthropic(api_key=env("ANTHROPIC_API_KEY"))
@@ -238,58 +206,24 @@ Produce this week's direction. Use web_search to check competitors and cultural 
 # ─── Render ────────────────────────────────────────────────────────────────────
 
 def render_full_brief(brief: dict, business_name: str) -> str:
+    """The Monday morning brief, in full. Five minutes to read."""
     date = today_key()
     out = [f"# {business_name} — growth brief, week of {date}\n",
            "*Cleo. Monday morning.*\n"]
 
-    out.append("## What worked this week\n")
-    for b in brief.get("what_worked", []) or ["(nothing specific yet)"]:
+    out.append("## This week's focus\n")
+    out.append(brief.get("this_weeks_focus", "—"))
+    out.append("")
+
+    out.append("## What worked\n")
+    for b in brief.get("what_worked", []) or ["(nothing specific from last week)"]:
         out.append(f"- {b}")
     out.append("")
 
     out.append("## What isn't working\n")
-    for b in brief.get("what_isnt_working", []) or ["(nothing flagged yet)"]:
+    for b in brief.get("what_isnt_working", []) or ["(nothing flagged)"]:
         out.append(f"- {b}")
     out.append("")
-
-    direction = brief.get("direction_this_week", {}) or {}
-    out.append("## Direction this week\n")
-    out.append(direction.get("focus", "—"))
-    out.append("")
-    if direction.get("key_actions"):
-        out.append("**Key actions:**\n")
-        for a in direction["key_actions"]:
-            owner = f" *({a.get('owner','')})*" if a.get("owner") else ""
-            out.append(f"- **{a.get('action','')}**{owner} — {a.get('why','')}")
-        out.append("")
-    if direction.get("tone_calibration"):
-        out.append(f"**Tone this week:** {direction['tone_calibration']}\n")
-
-    cg = brief.get("content_guidance", {}) or {}
-    if cg.get("moments_to_cover"):
-        out.append("## Content guidance\n")
-        out.append("**Moments to cover:**\n")
-        for m in cg["moments_to_cover"]:
-            out.append(f"- **{m.get('moment','')}** — {m.get('why','')}")
-            if m.get("hook_example"):
-                out.append(f"  - Example hook: \"{m['hook_example']}\"")
-        out.append("")
-
-    seo = brief.get("seo_guidance", {}) or {}
-    if any([seo.get("priority_keywords"), seo.get("priority_backlink_targets"),
-            seo.get("forum_angles"), seo.get("other")]):
-        out.append("## SEO guidance\n")
-        if seo.get("priority_keywords"):
-            out.append("**Priority keywords:** " + ", ".join(seo["priority_keywords"]))
-        if seo.get("priority_backlink_targets"):
-            out.append("**Priority backlink targets:** " + ", ".join(seo["priority_backlink_targets"]))
-        if seo.get("forum_angles"):
-            out.append("**Forum / community angles:**")
-            for a in seo["forum_angles"]:
-                out.append(f"- {a}")
-        if seo.get("other"):
-            out.append(f"\n{seo['other']}")
-        out.append("")
 
     exp = brief.get("this_weeks_experiment", {}) or {}
     out.append("## This week's experiment\n")
@@ -315,63 +249,31 @@ def render_full_brief(brief: dict, business_name: str) -> str:
     return "\n".join(out)
 
 
-def render_direction_for_team(brief: dict) -> str:
-    """Short version any downstream agent or human can read."""
+def render_one_liner(brief: dict) -> str:
+    """The bare minimum: one sentence saying what to do this week.
+
+    Useful if you ever pipe Cleo into another agent or display her output
+    on a dashboard. Lives in exchange/cleo-direction-latest.md.
+    """
     date = today_key()
-    direction = brief.get("direction_this_week", {}) or {}
-    cg = brief.get("content_guidance", {}) or {}
-    seo = brief.get("seo_guidance", {}) or {}
     exp = brief.get("this_weeks_experiment", {}) or {}
-
     out = [
-        f"# Cleo's direction — week of {date}\n",
-        "Read this before planning. Then do the work.\n",
+        f"# Cleo — week of {date}\n",
         "## Focus\n",
-        direction.get("focus", "—"),
+        brief.get("this_weeks_focus", "—"),
         "",
+        "## Experiment\n",
+        f"**{exp.get('name','(unnamed)')}**",
+        f"- {exp.get('hypothesis','')}",
+        f"- Run: {exp.get('how_to_run','')}",
+        f"- Measure: {exp.get('what_to_measure','')}",
+        f"- Decide by: {exp.get('decide_by','')}",
     ]
-
-    if direction.get("key_actions"):
-        out.append("## Key actions\n")
-        for a in direction["key_actions"]:
-            owner = f" *({a.get('owner','')})*" if a.get("owner") else ""
-            out.append(f"- **{a.get('action','')}**{owner} — {a.get('why','')}")
-        out.append("")
-
-    if cg.get("moments_to_cover"):
-        out.append("## Content moments\n")
-        for m in cg["moments_to_cover"]:
-            out.append(f"- **{m.get('moment','')}** — {m.get('why','')}")
-            if m.get("hook_example"):
-                out.append(f"  - Hook idea: \"{m['hook_example']}\"")
-        out.append("")
-
-    if any([seo.get("priority_keywords"), seo.get("priority_backlink_targets"),
-            seo.get("forum_angles"), seo.get("other")]):
-        out.append("## SEO\n")
-        if seo.get("priority_keywords"):
-            out.append("**Priority keywords:** " + ", ".join(seo["priority_keywords"]))
-        if seo.get("priority_backlink_targets"):
-            out.append("**Priority backlink targets:** " + ", ".join(seo["priority_backlink_targets"]))
-        if seo.get("forum_angles"):
-            out.append("**Forum angles:**")
-            for a in seo["forum_angles"]:
-                out.append(f"- {a}")
-        if seo.get("other"):
-            out.append(f"\n{seo['other']}")
-        out.append("")
-
-    if direction.get("tone_calibration"):
-        out.append(f"**Tone this week:** {direction['tone_calibration']}\n")
-
-    out.append("## This week's experiment\n")
-    out.append(f"**{exp.get('name','(unnamed)')}** — {exp.get('hypothesis','')}")
-    out.append(f"Run: {exp.get('how_to_run','')}  Measure: {exp.get('what_to_measure','')}")
     return "\n".join(out)
 
 
 def render_brief_summary(brief: dict) -> str:
-    """Short summary for Station inbox."""
+    """One line for the Station inbox."""
     date = today_key()
     exp = brief.get("this_weeks_experiment", {}) or {}
     return (
@@ -503,9 +405,9 @@ def main() -> int:
 
     EXCHANGE.mkdir(exist_ok=True)
     direction_path = EXCHANGE / "cleo-direction-latest.md"
-    direction_path.write_text(render_direction_for_team(brief))
+    direction_path.write_text(render_one_liner(brief))
     run.files_written.append(str(direction_path.relative_to(ROOT)))
-    log(f"  direction:    {direction_path.relative_to(ROOT)}")
+    log(f"  one-liner:    {direction_path.relative_to(ROOT)}")
 
     LOGS.mkdir(exist_ok=True)
     (LOGS / f"cleo-analysis-{run.date}.json").write_text(json.dumps(brief, indent=2, default=str))
