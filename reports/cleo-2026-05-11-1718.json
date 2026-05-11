@@ -1,0 +1,13 @@
+{
+  "agent": "cleo",
+  "agent_display": "Cleo, Growth strategy",
+  "timestamp": "2026-05-11T17:18:35",
+  "status": "needs_input",
+  "headline": "Cleo's weekly run failed (2026-05-11)",
+  "summary": "Claude analysis failed: Missing required environment variable: ANTHROPIC_API_KEY",
+  "actions_needed": [
+    "Check the GitHub Actions run for full logs",
+    "Re-run the workflow once fixed"
+  ],
+  "files_created": []
+}
